@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 30%
+      maxSurge: 50%
+  revisionHistoryLimit: 3
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+        enabled: "true"
+    spec:
+      containers:
+      - name: {{ .Release.Name }}
+        image: {{ .Values.image }}
+        command: [{{ .Values.command }}]
+        args: [{{ .Values.command_args }}]
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        resources:
+          limits:
+            memory: {{ quote .Values.resources.limits.memory }}
+            cpu: {{ quote .Values.resources.limits.cpu }}
+          requests:
+            memory: {{ quote .Values.resources.requests.memory }}
+            cpu: {{ quote .Values.resources.requests.cpu }}
+
+      imagePullSecrets:
+      - name: github-pull-secret

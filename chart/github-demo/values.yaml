@@ -1,0 +1,15 @@
+# Default values for red-delivery.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: '1'
+resources:
+  requests:
+    memory: 1Gi
+    cpu: 10m
+  limits:
+    memory: 1Gi
+    cpu: "1"
+url:
+  - ""
+image: docker.pkg.github.com/spring-media/ms-fitbook/ms-fitbook:latest
