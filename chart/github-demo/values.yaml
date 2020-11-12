@@ -12,4 +12,4 @@ resources:
     cpu: "1"
 url:
   - ""
-image: docker.pkg.github.com/spring-media/ms-fitbook/ms-fitbook:latest
+image: ghcr.io/spring-media/github-demo/universe-2020-demo:c9f53b7
