@@ -14,5 +14,5 @@ spec:
         paths:
           - backend:
               serviceName: {{ $chartname }}-service
-              servicePort: 8080
+              servicePort: 80
 {{- end }}
