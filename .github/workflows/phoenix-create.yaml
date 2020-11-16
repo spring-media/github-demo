@@ -1,0 +1,20 @@
+name: Create Phoenix
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  create_phoenix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Phoenix
+        run: |
+          SHORT_SHA=${GITHUB_SHA::7}
+          PROJECT="github-demo"
+          LABEL=$(echo ${{github.event.ref}} | sed 's/refs\/heads\///g' | tr '[:upper:]' '[:lower:]' | awk -F "-" '{print $1 "-" $2 "-" $3}')
+    
+          PAYLOAD="{\"ref\":\"master\",\"inputs\":{\"phoenixName\":\"$LABEL\",\"projectName\":\"$PROJECT\",\"gitHash\":\"$SHORT_SHA\"}}"
+          echo $PAYLOAD
+          curl -X POST -d "$PAYLOAD" -H "authorization: Bearer ${{ secrets.DEMO_GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/spring-media/github-demo-flux-cd/actions/workflows/create-phoenix.yaml/dispatches
