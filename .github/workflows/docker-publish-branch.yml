@@ -35,5 +35,5 @@ jobs:
           echo VERSION=$VERSION
           echo LABEL=$LABEL
 
-          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker tag $IMAGE_NAME $IMAGE_ID:$LABEL-$VERSION
           docker push $IMAGE_ID:$LABEL-$VERSION
