@@ -14,6 +14,6 @@ jobs:
           PROJECT="github-demo"
           LABEL=$(echo ${{github.event.ref}} | sed 's/refs\/heads\///g' | tr '[:upper:]' '[:lower:]' | awk -F "-" '{print $1 "-" $2 "-" $3}')
 
-          PAYLOAD="{\"ref\":\"master\",\"inputs\":{\"phoenixName\":\"$LABEL\",\"projectName\":\"$PROJECT\"}}"
+          PAYLOAD="{\"ref\":\"main\",\"inputs\":{\"phoenixName\":\"$LABEL\",\"projectName\":\"$PROJECT\"}}"
           echo $(echo $PAYLOAD)
           curl -X POST -d "$PAYLOAD" -H "authorization: Bearer ${{ secrets.DEMO_GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/spring-media/github-demo-flux-cd/actions/workflows/destroy-phoenix.yaml/dispatches
