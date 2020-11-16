@@ -1,7 +1,7 @@
 name: Create Phoenix
 
 on:
-  push:
+  create:
     branches-ignore:
       - master
 
