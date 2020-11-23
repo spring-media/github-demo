@@ -22,7 +22,7 @@ jobs:
         run: |
           # remove all deployments of this phoenix environment
           LABEL=$(echo ${{github.event.ref}} | sed 's/refs\/heads\///g' | tr '[:upper:]' '[:lower:]' | awk -F "-" '{print $1 "-" $2 "-" $3}')
-          DEPLOYMENT_IDS=$(curl -s -X GET -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept:application/vnd.github.ant-man-preview+json" https://api.github.com/repos/spring-media/github-demo/deployments | jq ".[] | select(.environment == \"$LABEL.test\")" | jq '.id')
+          DEPLOYMENT_IDS=$(curl -s -X GET -H "authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -H "Accept:application/vnd.github.ant-man-preview+json" https://api.github.com/repos/spring-media/github-demo/deployments | jq ".[] | select(.environment == \"${LABEL}.test\")" | jq '.id')
 
           PAYLOAD="{\"state\": \"inactive\",\"description\": \"Deployment status switched to inactive.\"}"
           
