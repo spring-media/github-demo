@@ -46,3 +46,6 @@ spec:
               secretKeyRef:
                 name: github-api-secret
                 key: password
+
+      imagePullSecrets:
+        - name: github-pull-secret

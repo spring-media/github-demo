@@ -38,11 +38,14 @@ jobs:
 
       - name: Create deployment
         run: |
+          # create a deployment associated with the created docker-image
           SHORT_SHA=${GITHUB_SHA::7}
           LABEL=$(echo ${{github.event.ref}} | sed 's/refs\/heads\///g' | tr '[:upper:]' '[:lower:]' | awk -F "-" '{print $1}')
           PAYLOAD="{\"ref\":\"$SHORT_SHA\",\"environment\":\"$LABEL.prd\",\"label\":\"$LABEL\",\"project\":\"${{ env.project }}\",\"description\":\"Deploy commit $SHORT_SHA\",\"auto_merge\":false,\"required_contexts\":[]}"
           echo $(echo $PAYLOAD)
           DEPLOYMENT_ID=$(curl -s -X POST -d "$PAYLOAD" -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -H "Accept:application/vnd.github.ant-man-preview+json" https://api.github.com/repos/spring-media/github-demo/deployments | jq '.id')
+          
+          # set state of the deployment to "queued"
           DEPLOYMENT_PAYLOAD="{\"environment\": \"$LABEL.prd\",\"state\": \"queued\",\"description\": \"Deployment created\"}"
           echo $(echo $DEPLOYMENT_PAYLOAD)
           curl -s -X POST -d "$DEPLOYMENT_PAYLOAD" -H 'authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' -H "Accept:application/vnd.github.flash-preview+json" https://api.github.com/repos/spring-media/github-demo/deployments/"$DEPLOYMENT_ID"/statuses
