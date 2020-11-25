@@ -3,7 +3,7 @@ name: Create Phoenix
 on:
   create:
     branches-ignore:
-      - master
+      - main
 
 jobs:
   create_phoenix:
